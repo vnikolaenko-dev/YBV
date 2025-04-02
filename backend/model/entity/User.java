@@ -12,7 +12,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false, unique = true)
+    @Column()
     private String name;
 
     @Column(nullable = false)
@@ -27,6 +27,11 @@ public class User {
 
     public User(String name, String password, String email) {
         this.name = name;
+        this.password = password;
+        this.email = email;
+    }
+
+    public User(String password, String email) {
         this.password = password;
         this.email = email;
     }

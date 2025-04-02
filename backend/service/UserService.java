@@ -17,11 +17,15 @@ public class UserService{
 
     @Transactional
     public void createUser(User user) {
-        user.setPassword(String.valueOf(user.getPassword().hashCode()));
+        user.setPassword(String.valueOf(user.getPassword()));
         userRepository.save(user);
     }
 
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public User updateUser(User user) {
+        return userRepository.save(user);
     }
 }

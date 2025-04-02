@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -26,12 +27,23 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         final String authorizationHeader = request.getHeader("Authorization");
 
-        String email = null;
-        String jwt = null;
+        String email = getEmail(authorizationHeader);
+
+        // Spring Security аутентифицирует пользователя
+        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, null, null);
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        }
+        chain.doFilter(request, response);
+    }
+
+
+    public String getEmail(String authorizationHeader) {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            jwt = authorizationHeader.substring(7);
+            String jwt = authorizationHeader.substring(7);
             try {
-                email = Jwts.parser()
+                return Jwts.parser()
                         .setSigningKey(secret)
                         .build()
                         .parseClaimsJws(jwt)
@@ -42,13 +54,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 logger.warn("JWT Token is invalid: " + e.getMessage());
             }
         }
-
-        // Spring Security аутентифицирует пользователя
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, null, null);
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        }
-        chain.doFilter(request, response);
+        return null;
     }
 }
