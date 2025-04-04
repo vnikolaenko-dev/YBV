@@ -9,6 +9,7 @@ export default function AuthForm() {
     const [isLogin, setIsLogin] = useState(true);
     const navigate = useNavigate();
 
+    // цветочек
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
