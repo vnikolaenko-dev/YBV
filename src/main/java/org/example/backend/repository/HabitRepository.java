@@ -9,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface HabitRepository extends JpaRepository<Habit, Long> {
+    Habit findHabitById(long id);
     List<Habit> getAllByUser(User user);
 }

@@ -24,6 +24,10 @@ public class BadHabitService {
         badHabitRepository.save(badHabit);
     }
 
+    public BadHabit getBadHabit(Habit habit) {
+        return badHabitRepository.findBadHabitByHabitId(habit.getId());
+    }
+
     public List<Habit> getAllUserBadHabits(User user) {
         List<Habit> badHabits = new ArrayList<>();
         for (Habit habit : habitService.getAllHabitsByUser(user)) {
