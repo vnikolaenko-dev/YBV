@@ -17,9 +17,11 @@ public class HabitService {
 
     @Transactional
     public Habit createHabit(Habit habit) {
-        BadHabit badHabit = new BadHabit();
-        badHabit.setHabit(habit);
         return habitRepository.save(habit);
+    }
+
+    public Habit getHabit(long id) {
+        return habitRepository.findHabitById(id);
     }
 
     public List<Habit> getAllHabitsByUser(User user) {
