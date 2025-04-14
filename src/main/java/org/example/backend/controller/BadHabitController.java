@@ -29,7 +29,7 @@ public class BadHabitController {
     private final HabitService habitService;
 
     // TODO пользователь является владельцем habit
-    @PostMapping("/get/{id}")
+    @GetMapping("/get/{id}")
     public BadHabitResponse getBadHabit(@RequestHeader("Authorization") String authHeader, @PathVariable long id) {
         try {
             String email = jwtRequestFilter.getEmail(authHeader);
