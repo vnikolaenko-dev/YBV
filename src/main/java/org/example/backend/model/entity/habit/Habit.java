@@ -1,6 +1,8 @@
 package org.example.backend.model.entity.habit;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.example.backend.model.entity.User;
@@ -13,6 +15,7 @@ import java.time.LocalDateTime;
 public class Habit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY) // Только в ответе
     private long id;
 
     @Column(nullable = false)
@@ -29,6 +32,7 @@ public class Habit {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     public Habit() {
