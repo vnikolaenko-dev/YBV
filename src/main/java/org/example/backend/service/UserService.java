@@ -4,10 +4,7 @@ import jakarta.transaction.Transactional;
 import org.example.backend.model.entity.User;
 import org.example.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
 import org.springframework.stereotype.Service;
 
 @Service
