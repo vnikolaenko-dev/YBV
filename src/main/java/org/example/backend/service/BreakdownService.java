@@ -1,11 +1,11 @@
 package org.example.backend.service;
 
 import lombok.Data;
-import org.example.backend.repository.BreakdownRepository;
 import org.springframework.stereotype.Service;
+import org.example.backend.repository.BreakdownRepository;
 
 @Service
 @Data
 public class BreakdownService {
-    private BreakdownRepository breakdownRepository;
+    private final BreakdownRepository breakdownRepository;
 }
