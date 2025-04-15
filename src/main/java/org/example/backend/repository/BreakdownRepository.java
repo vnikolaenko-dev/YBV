@@ -9,7 +9,5 @@ import java.util.List;
 
 @Repository
 public interface BreakdownRepository extends JpaRepository<Breakdown, Long> {
-    Breakdown findByBadHabit(BadHabit badHabit);
-
     List<Breakdown> findAllByBadHabit(BadHabit badHabit);
 }
