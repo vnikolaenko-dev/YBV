@@ -45,6 +45,7 @@ public class BadHabitController {
         }
     }
 
+    // TODO протестировать
     @GetMapping("/get-all")
     public ArrayList<BadHabitResponse> getAll(@RequestHeader("Authorization") String authHeader) {
         try {
