@@ -66,15 +66,14 @@ public class BadHabitController {
     }
 
     @PostMapping("/create")
-    public StatusResponse createBadHabit(@RequestHeader("Authorization") String authHeader, @RequestBody Habit habit) {
+    public Habit createBadHabit(@RequestHeader("Authorization") String authHeader, @RequestBody Habit habit) {
         try {
             String email = jwtRequestFilter.getEmail(authHeader);
             User user = userService.findUserByEmail(email);
             habit.setUser(user);
-            badHabitService.createBadHabit(habit);
-            return new StatusResponse(Status.OK);
+            return badHabitService.createBadHabit(habit);
         } catch (Exception e) {
-            return new StatusResponse(Status.ERROR);
+            return null;
         }
     }
 

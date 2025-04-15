@@ -18,10 +18,11 @@ public class BadHabitService {
     private final HabitService habitService;
 
     @Transactional
-    public void createBadHabit(Habit habit) {
+    public Habit createBadHabit(Habit habit) {
         BadHabit badHabit = new BadHabit();
+        Habit h = habitService.createHabit(habit);
         badHabit.setHabit(habitService.createHabit(habit));
-        badHabitRepository.save(badHabit);
+        return h;
     }
 
     public BadHabit getBadHabit(Habit habit) {
