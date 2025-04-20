@@ -1,5 +1,5 @@
 import '../styles/index.css'
-import LoginButton from "../Auth/LoginButton.jsx";
+import LoginButton from ".././auth/LoginButton.jsx";
 function Index() {
     return (
         <div>
