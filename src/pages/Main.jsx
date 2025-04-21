@@ -16,7 +16,12 @@ export default function Main() {
         if (savedHabits && habitsLoaded === "true") {
             setHabits(JSON.parse(savedHabits));
         } else {
-            fetch("https://vnikolaenko.site:8000/bad-habit/get-all")
+            fetch("https://vnikolaenko.site:8080/bad-habit/get-all", {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            })
                 .then(res => res.json())
                 .then(habits => {
                     setHabits(habits);
@@ -32,9 +37,15 @@ export default function Main() {
     }, [habits]);
 
     async function removeHabit(habitId) {
+
+        const habitToRemove = habits.find(habit => habit.id === habitId)
+        if (!habitToRemove) return;
+
+        const endpoint = habitToRemove.good ? `https://vnikolaenko.site:8080/good-habit/remove/${habitId}` : `https://vnikolaenko.site:8080/bad-habit/remove/${habitId}`;
         try {
-            await fetch(`https://vnikolaenko.site:8000/bad-habit/remove/${habitId}`, {
+            await fetch(endpoint, {
                 method: "DELETE",
+                headers: { "Authorization": `Bearer ${localStorage.getItem("jwtToken")}` }
             });
             setHabits((prev) => prev.filter(habit => habit.id !== habitId));
         } catch (error) {
@@ -45,8 +56,9 @@ export default function Main() {
 
     async function breakDown(habitId) {
         try {
-            await fetch(`https://vnikolaenko.site:8000/bad-habit/breakdown-now/${habitId}`, {
+            await fetch(`https://vnikolaenko.site:8080/bad-habit/breakdown-now/${habitId}`, {
                 method: "GET",
+                headers: { "Authorization": `Bearer ${localStorage.getItem("jwtToken")}` }
             });
         } catch (error) {
             console.log(error);
