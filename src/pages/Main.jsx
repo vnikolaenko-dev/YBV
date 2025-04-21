@@ -16,7 +16,7 @@ export default function Main() {
         if (savedHabits && habitsLoaded === "true") {
             setHabits(JSON.parse(savedHabits));
         } else {
-            fetch("http://localhost:8080/auth/get-all")
+            fetch("http://localhost:8080/auth/bad-habit/get-all")
                 .then(res => res.json())
                 .then(habits => {
                     setHabits(habits);
