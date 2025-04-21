@@ -11,19 +11,23 @@ export default function Main() {
 
     useEffect(() => {
         const savedHabits = localStorage.getItem("habits");
-        const habitsLoaded = localStorage.getItem("habitsLoaded");
+        const habitsLoadedFlag = localStorage.getItem("habitsLoaded");
 
-        if (savedHabits && habitsLoaded === "true") {
+        if (savedHabits && habitsLoadedFlag === "true") {
             setHabits(JSON.parse(savedHabits));
         } else {
             fetch("https://vnikolaenko.site:8080/bad-habit/get-all", {
                 method: "GET",
                 headers: {
-                    "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+                    "Authorization": `Bearer ${sessionStorage.getItem("jwtToken")}`
                 }
             })
-                .then(res => res.json())
+                .then(res => {
+                    console.log("Response status: ", res.status);
+                    return res.json()
+                })
                 .then(habits => {
+                    console.log(habits);
                     setHabits(habits);
                     localStorage.setItem("habits", JSON.stringify(habits));
                     localStorage.setItem("habitsLoaded", "true");
@@ -45,7 +49,7 @@ export default function Main() {
         try {
             await fetch(endpoint, {
                 method: "DELETE",
-                headers: { "Authorization": `Bearer ${localStorage.getItem("jwtToken")}` }
+                headers: { "Authorization": `Bearer ${sessionStorage.getItem("jwtToken")}` }
             });
             setHabits((prev) => prev.filter(habit => habit.id !== habitId));
         } catch (error) {
@@ -58,7 +62,7 @@ export default function Main() {
         try {
             await fetch(`https://vnikolaenko.site:8080/bad-habit/breakdown-now/${habitId}`, {
                 method: "GET",
-                headers: { "Authorization": `Bearer ${localStorage.getItem("jwtToken")}` }
+                headers: { "Authorization": `Bearer ${sessionStorage.getItem("jwtToken")}` }
             });
         } catch (error) {
             console.log(error);
