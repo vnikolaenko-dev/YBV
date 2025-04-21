@@ -16,7 +16,7 @@ export default function Main() {
         if (savedHabits && habitsLoaded === "true") {
             setHabits(JSON.parse(savedHabits));
         } else {
-            fetch("http://localhost:8080/auth/bad-habit/get-all")
+            fetch("https://vnikolaenko.site:8000/bad-habit/get-all")
                 .then(res => res.json())
                 .then(habits => {
                     setHabits(habits);
@@ -33,7 +33,7 @@ export default function Main() {
 
     async function removeHabit(habitId) {
         try {
-            await fetch(`http://localhost:8080/auth/${habitId}`, {
+            await fetch(`https://vnikolaenko.site:8000/bad-habit/remove/${habitId}`, {
                 method: "DELETE",
             });
             setHabits((prev) => prev.filter(habit => habit.id !== habitId));
@@ -45,7 +45,7 @@ export default function Main() {
 
     async function breakDown(habitId) {
         try {
-            await fetch(`http://localhost:8080/breakdown-now/${habitId}`, {
+            await fetch(`https://vnikolaenko.site:8000/bad-habit/breakdown-now/${habitId}`, {
                 method: "GET",
             });
         } catch (error) {

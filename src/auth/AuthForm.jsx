@@ -14,7 +14,7 @@ export default function AuthForm() {
         e.preventDefault();
         setError(null);
 
-        const endpoint = isLogin ? "http://localhost:8080/auth/login" : "http://localhost:8080/auth/register";
+        const endpoint = isLogin ? "https://vnikolaenko.site:8000/auth/login" : "https://vnikolaenko.site:8000/auth/register";
         const response = await fetch(endpoint, {
             method: "POST",
             headers: { "Content-Type": "application/json" },

@@ -20,7 +20,7 @@ export default function PopUpForm({ active, setActive, onAddHabit }) {
         };
 
         try {
-            const endpoint = good ? "http://localhost:8080/auth/addGoodHabit" : "http://localhost:8080/auth/addBadHabit";
+            const endpoint = good ? "https://vnikolaenko.site:8000/auth/addGoodHabit" : "https://vnikolaenko.site:8000/bad-habit/create";
             const response = await fetch(endpoint, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},

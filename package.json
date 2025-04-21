@@ -17,9 +17,9 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.4.1",
+    "react-scripts": "^5.0.1",
     "styled-components": "^6.1.16"
   },
-  "proxy": "http://localhost:8080",
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@types/react": "^19.0.10",
