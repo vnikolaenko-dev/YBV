@@ -20,11 +20,11 @@ export default function PopUpForm({ active, setActive, onAddHabit }) {
         };
 
         try {
-            const endpoint = good ? "https://vnikolaenko.site:8000/good-habit/create" : "https://vnikolaenko.site:8000/bad-habit/create";
+            const endpoint = good ? "https://vnikolaenko.site:8080/good-habit/create" : "https://vnikolaenko.site:8080/bad-habit/create";
             const response = await fetch(endpoint, {
                 method: "POST",
                 headers: {
-                    "Authorization": `Bearer ${sessionStorage.getItem("jwtToken")}`,
+                    "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`,
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(newHabit),

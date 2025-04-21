@@ -9,15 +9,16 @@ export default function AuthForm() {
     const [isLogin, setIsLogin] = useState(true);
     const navigate = useNavigate();
 
-    // цветочек
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
 
-        const endpoint = isLogin ? "https://vnikolaenko.site:8000/auth/login" : "https://vnikolaenko.site:8000/auth/register";
+        const endpoint = isLogin ? "https://vnikolaenko.site:8080/auth/login" : "https://vnikolaenko.site:8080/auth/register";
         const response = await fetch(endpoint, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify({ email, password })
         });
 
