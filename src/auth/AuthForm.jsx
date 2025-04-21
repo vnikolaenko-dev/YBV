@@ -9,6 +9,7 @@ export default function AuthForm() {
     const [isLogin, setIsLogin] = useState(true);
     const navigate = useNavigate();
 
+    // цветочек
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
@@ -28,7 +29,8 @@ export default function AuthForm() {
         } else if (data.status !== "OK") {
             setError(data.status);
         } else {
-            localStorage.setItem("jwtToken", data.token);
+            sessionStorage.setItem("jwtToken", data.token);
+            localStorage.setItem("email", email);
             navigate("/main");
             console.log("srabotalo");
         }
