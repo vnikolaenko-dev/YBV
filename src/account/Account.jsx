@@ -23,7 +23,7 @@ export default function Account({ active, setActive }) {
         const response = await fetch(`https://vnikolaenko.site:8080/change-name/${name}`, {
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+                "Authorization": `Bearer ${sessionStorage.getItem("jwtToken")}`
             }
         });
         console.log(name)
@@ -36,7 +36,7 @@ export default function Account({ active, setActive }) {
         const response = await fetch(`https://vnikolaenko.site:8080/change-email/${email}`, {
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+                "Authorization": `Bearer ${sessionStorage.getItem("jwtToken")}`
             }
         });
         console.log(email)
