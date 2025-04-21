@@ -7,16 +7,28 @@ export default function Main() {
     const [popUpActive, setPopUpActive] = useState(false);
     const [accInfo, setAccInfo] = useState(false);
     const [habits, setHabits] = useState([]);
+    const [habitsLoaded, setHabitsLoaded] = useState(false);
 
     useEffect(() => {
-        const savedHabits = sessionStorage.getItem("habits");
-        if (savedHabits){
-            setHabits(JSON.parse(savedHabits))
+        const savedHabits = localStorage.getItem("habits");
+        const habitsLoaded = localStorage.getItem("habitsLoaded");
+
+        if (savedHabits && habitsLoaded === "true") {
+            setHabits(JSON.parse(savedHabits));
+        } else {
+            fetch("http://localhost:8080/auth/get-all")
+                .then(res => res.json())
+                .then(habits => {
+                    setHabits(habits);
+                    localStorage.setItem("habits", JSON.stringify(habits));
+                    localStorage.setItem("habitsLoaded", "true");
+                })
+            .catch(err => console.log(err));
         }
     }, []);
 
     useEffect(() => {
-        sessionStorage.setItem("habits", JSON.stringify(habits));
+        localStorage.setItem("habits", JSON.stringify(habits));
     }, [habits]);
 
     async function removeHabit(habitId) {
