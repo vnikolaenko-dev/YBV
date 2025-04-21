@@ -24,7 +24,7 @@ export default function PopUpForm({ active, setActive, onAddHabit }) {
             const response = await fetch(endpoint, {
                 method: "POST",
                 headers: {
-                    "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`,
+                    "Authorization": `Bearer ${sessionStorage.getItem("jwtToken")}`,
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(newHabit),
