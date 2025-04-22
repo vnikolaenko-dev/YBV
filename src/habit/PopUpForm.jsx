@@ -14,7 +14,7 @@ export default function PopUpForm({ active, setActive, onAddHabit }) {
 
         const newHabit = {
             name,
-            dateOfStart: moment().format("YYYY-MM-DD"),
+            dateOfStart: moment().format("YYYY-MM-DD") + "T00:00:00",
             target,
             good,
         };
