@@ -9,6 +9,7 @@ import org.example.backend.repository.HabitRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Data
@@ -20,7 +21,11 @@ public class HabitService {
         return habitRepository.save(habit);
     }
 
-    public Habit getHabit(long id) {
+    public Habit getHabit(long id, User user) {
+        Habit habit = habitRepository.findHabitById(id);
+        if (habit == null || !Objects.equals(habit.getUser().getEmail(), user.getEmail())) {
+            return null;
+        }
         return habitRepository.findHabitById(id);
     }
 

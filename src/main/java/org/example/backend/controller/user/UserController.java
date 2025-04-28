@@ -1,4 +1,4 @@
-package org.example.backend.controller;
+package org.example.backend.controller.user;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.model.entity.User;
@@ -17,8 +17,7 @@ public class UserController {
     @GetMapping("/change-name/{name}")
     public Status changeName(@RequestHeader("Authorization") String authHeader, @PathVariable String name) {
         try {
-            String email = jwtRequestFilter.getEmail(authHeader);
-            User user = userService.findUserByEmail(email);
+            User user = userService.getUserByEmail(jwtRequestFilter.getEmail(authHeader));
             user.setName(name);
             userService.updateUser(user);
             return Status.OK;
@@ -30,8 +29,7 @@ public class UserController {
     @GetMapping("/change-email/{new_email}")
     public Status changeEmail(@RequestHeader("Authorization") String authHeader, @PathVariable String new_email) {
         try {
-            String email = jwtRequestFilter.getEmail(authHeader);
-            User user = userService.findUserByEmail(email);
+            User user = userService.getUserByEmail(jwtRequestFilter.getEmail(authHeader));
             user.setEmail(new_email);
             userService.updateUser(user);
             return Status.OK;
@@ -43,8 +41,7 @@ public class UserController {
     @GetMapping("/change-password/{password}")
     public Status changePassword(@RequestHeader("Authorization") String authHeader, @PathVariable String password) {
         try {
-            String email = jwtRequestFilter.getEmail(authHeader);
-            User user = userService.findUserByEmail(email);
+            User user = userService.getUserByEmail(jwtRequestFilter.getEmail(authHeader));
             user.setPassword(password);
             userService.updateUser(user);
             return Status.OK;
