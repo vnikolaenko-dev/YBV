@@ -16,34 +16,43 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-
+/**
+ * Конфигурация безопасности Spring Security.
+ * Настраивает аутентификацию, авторизацию и CORS политику.
+ */
 @Configuration
 @RequiredArgsConstructor
-@EnableMethodSecurity
+@EnableMethodSecurity // Включает аннотационную безопасность (@PreAuthorize и др.)
 public class SecurityConfig {
-    private final JwtRequestFilter jwtRequestFilter;
+    private final JwtRequestFilter jwtRequestFilter; // Фильтр для JWT аутентификации
 
+    /**
+     * Конфигурация цепочки фильтров безопасности.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        http
+                .csrf(AbstractHttpConfigurer::disable) // Отключаем CSRF, так как используем JWT
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Настраиваем CORS
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/user/**").authenticated()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Разрешаем OPTIONS запросы
+                        .requestMatchers("/auth/**").permitAll() // Публичные эндпоинты
+                        .requestMatchers("/user/**").authenticated() // Требует аутентификации
                         .requestMatchers("/bad-habit/**").authenticated()
-                        .requestMatchers("/actuator/**").hasRole("ADMIN")
-                        .requestMatchers("/swagger-ui/**").permitAll()
-                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/actuator/**").hasRole("ADMIN") // Только для админов
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Документация
                 )
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // Добавляем фильтр перед стандартным фильтром аутентификации
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // Добавляем JWT фильтр
         return http.build();
     }
 
-
+    /**
+     * Конфигурация CORS политики.
+     */
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+        // Разрешенные источники (лучше вынести в конфиг)
         configuration.setAllowedOrigins(List.of(
                 "http://vnikolaenko.site:3000",
                 "https://vnikolaenko.site:3000",
@@ -53,10 +62,10 @@ public class SecurityConfig {
                 "https://127.0.0.1:5173",
                 "https://vnikolaenko.site:8000"
         ));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
-        configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600L); // Кэширование preflight
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Разрешенные HTTP методы
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept")); // Разрешенные заголовки
+        configuration.setAllowCredentials(true); // Разрешаем передачу кук/credentials
+        configuration.setMaxAge(3600L); // Время кэширования preflight запросов
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration); // Применяем ко всем путям
