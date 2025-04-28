@@ -8,7 +8,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -32,17 +34,32 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // Отключаем стандартную форму входа
+                .formLogin(form -> form.disable())
+
+                // Отключаем базовую HTTP-аутентификацию
+                .httpBasic(basic -> basic.disable())
+
+                // Делаем приложение STATELESS (для JWT)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+
                 .csrf(AbstractHttpConfigurer::disable) // Отключаем CSRF, так как используем JWT
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Настраиваем CORS
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Разрешаем OPTIONS запросы
                         .requestMatchers("/auth/**").permitAll() // Публичные эндпоинты
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Документация
                         .requestMatchers("/user/**").authenticated() // Требует аутентификации
                         .requestMatchers("/bad-habit/**").authenticated()
+                        .requestMatchers("/good-habit/**").authenticated()
+                        .requestMatchers("/habit/**").authenticated()
                         .requestMatchers("/actuator/**").hasRole("ADMIN") // Только для админов
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Документация
                 )
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // Добавляем JWT фильтр
+
+                // Добавляем свой JWT-фильтр
+                .addFilterBefore(jwtRequestFilter, AuthorizationFilter.class);
         return http.build();
     }
 
