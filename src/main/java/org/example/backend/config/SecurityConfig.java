@@ -57,7 +57,6 @@ public class SecurityConfig {
                         .requestMatchers("/habit/**").authenticated()
                         .requestMatchers("/actuator/**").hasRole("ADMIN") // Только для админов
                 )
-
                 // Добавляем свой JWT-фильтр
                 .addFilterBefore(jwtRequestFilter, AuthorizationFilter.class);
         return http.build();

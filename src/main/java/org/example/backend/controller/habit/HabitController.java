@@ -24,15 +24,20 @@ import java.util.ArrayList;
 public class HabitController {
     private final UserService userService;
     private final JwtRequestFilter jwtRequestFilter;
-    private final BadHabitService badHabitService;
-    private final BreakdownService breakdownService;
     private final HabitService habitService;
 
     @GetMapping("/get-all")
     public ArrayList<Habit> getAll(@RequestHeader("Authorization") String authHeader) {
+
         User user = userService.getUserByEmail(jwtRequestFilter.getEmail(authHeader));
-        ArrayList<Habit> habits = (ArrayList<Habit>) habitService.getAllHabitsByUser(user);
-        return habits;
+
+        try {
+            return (ArrayList<Habit>) habitService.getAllHabitsByUser(user);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ArrayList<>();
+        }
+
     }
 
 
