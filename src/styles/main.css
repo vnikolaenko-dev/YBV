@@ -7,17 +7,107 @@
 }
 
 .habit {
-    background-color: grey;
+    background-color: #1C2526; /* Темный фон, как на скриншоте */
     border-radius: 10px;
-    font-weight: bold;
-    font-size: 10px;
-    align-items: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     cursor: grab;
     transition: box-shadow 0.2s ease, transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
 }
 
-.add-habit{
+.habit:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Стили для иконки батареи */
+.habit .battery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.habit .battery-percentage {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.habit .battery-icon {
+    width: 60px;
+    height: 30px;
+    border: 2px solid #A1A1A1;
+    border-radius: 5px;
+    position: relative;
+    background-color: transparent;
+}
+
+.habit .battery-fill {
+    height: 100%;
+    background-color: #C084FC; /* Фиолетовый цвет заполнения */
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.habit .battery-time {
+    font-size: 12px;
+    color: #A1A1A1;
+    margin-top: 5px;
+}
+
+/* Стили для текста привычки */
+.habit .habit-text {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+/* Стили для прогресс-бара */
+.habit .progress-bar {
+    width: 80%;
+    height: 8px;
+    background-color: #3A4445;
+    border-radius: 5px;
+    margin: 5px 0;
+    overflow: hidden;
+}
+
+.habit .progress-fill {
+    height: 100%;
+    background-color: #F472B6; /* Розовый цвет прогресса */
+    border-radius: 5px;
+    transition: width 0.3s ease;
+}
+
+/* Стили для дней недели */
+.habit .days {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-top: 5px;
+}
+
+.habit .day {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #3A4445;
+}
+
+.habit .day.completed {
+    background-color: #F472B6; /* Розовый для выполненных дней */
+}
+
+/* Стили для кнопки добавления привычки */
+.add-habit {
     background-color: grey;
     border: 1px solid grey;
     border-radius: 10px;
@@ -27,13 +117,17 @@
     left: 85%;
     top: 5%;
     width: 30px;
+    height: 30px;
     position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
 
-    &:hover{
-        background-color: darkgrey;
-        transition: 0.3s;
-    }
-
+.add-habit:hover {
+    background-color: darkgrey;
+    transition: 0.3s;
 }
 
 .account{

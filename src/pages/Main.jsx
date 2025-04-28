@@ -16,7 +16,7 @@ export default function Main() {
         if (savedHabits && habitsLoadedFlag === "true") {
             setHabits(JSON.parse(savedHabits));
         } else {
-            fetch("https://vnikolaenko.site:8080/bad-habit/get-all", {
+            fetch("https://vnikolaenko.site:8000/habit/get-all", {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${sessionStorage.getItem("jwtToken")}`
