@@ -30,6 +30,6 @@ public class HabitService {
     }
 
     public List<Habit> getAllHabitsByUser(User user) {
-        return habitRepository.getAllByUser(user);
+        return habitRepository.findAllByUser(user);
     }
 }
