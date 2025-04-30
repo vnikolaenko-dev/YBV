@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import lombok.Data;
 import org.example.backend.model.entity.User;
 import org.example.backend.model.entity.habit.Habit;
-import org.example.backend.model.entity.habit.badHabit.BadHabit;
 import org.example.backend.repository.HabitRepository;
 import org.springframework.stereotype.Service;
 
