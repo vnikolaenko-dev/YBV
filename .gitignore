@@ -32,3 +32,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+.vite/
+node_modules/
+package-lock.json
+resources/
+
