@@ -13,4 +13,5 @@ export default function HabitGrid({ habits, removeHabit, breakDown }) {
             ))}
         </div>
     );
+    //
 }

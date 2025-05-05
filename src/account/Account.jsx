@@ -35,7 +35,7 @@ export default function Account({ active, setActive }) {
     // http://localhost:8080/auth/change-email/${email}
     // https://vnikolaenko.site:8000/change-email/${email}
     async function changeEmail(email) {
-        const response = await fetch(`https://vnikolaenko.site:8000/change-email/${email}`, {
+        const response = await fetch(`http://localhost:8080/auth/change-email/${email}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${sessionStorage.getItem("jwtToken")}`

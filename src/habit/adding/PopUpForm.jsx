@@ -53,4 +53,5 @@ export default function PopUpForm({ active, setActive, onAddHabit }) {
             </div>
         </>
     );
+    //
 }

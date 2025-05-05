@@ -1,104 +1,64 @@
-import PopUpForm from "../habit/PopUpForm.jsx";
-import '../styles/main.css';
-import {useEffect, useState} from "react";
+import { useState } from "react";
+import useHabits from "../pages/main_components/useHabit.js";
 import Account from "../account/Account.jsx";
+import PopUpForm from "../habit/adding/PopUpForm.jsx";
+import HabitGrid from "../pages/main_components/HabitGrid.jsx";
+import "../styles/main.css";
+import {authFetch} from "../auth/fetchUser.js";
 
 export default function Main() {
     const [popUpActive, setPopUpActive] = useState(false);
     const [accInfo, setAccInfo] = useState(false);
-    const [habits, setHabits] = useState([]);
-    const [habitsLoaded, setHabitsLoaded] = useState(false);
-
-    useEffect(() => {
-        const savedHabits = localStorage.getItem("habits");
-        const habitsLoadedFlag = localStorage.getItem("habitsLoaded");
-
-        if (savedHabits && habitsLoadedFlag === "true") {
-            setHabits(JSON.parse(savedHabits));
-        } else {
-            fetch("https://vnikolaenko.site:8080/bad-habit/get-all", {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${sessionStorage.getItem("jwtToken")}`
-                }
-            })
-                .then(res => {
-                    console.log("Response status: ", res.status);
-                    return res.json()
-                })
-                .then(habits => {
-                    console.log(habits);
-                    setHabits(habits);
-                    localStorage.setItem("habits", JSON.stringify(habits));
-                    localStorage.setItem("habitsLoaded", "true");
-                })
-            .catch(err => console.log(err));
-        }
-    }, []);
-
-    useEffect(() => {
-        localStorage.setItem("habits", JSON.stringify(habits));
-    }, [habits]);
+    const [habits, setHabits] = useHabits();
 
     async function removeHabit(habitId) {
-
-        const habitToRemove = habits.find(habit => habit.id === habitId)
+        const habitToRemove = habits.find(h => h.id === habitId);
         if (!habitToRemove) return;
 
-        const endpoint = habitToRemove.good ? `https://vnikolaenko.site:8080/good-habit/remove/${habitId}` : `https://vnikolaenko.site:8080/bad-habit/remove/${habitId}`;
+        // http://localhost:8080/auth/${habitId}
+        // https://vnikolaenko.site:8000/good-habit/remove/${habitId}
+        // https://vnikolaenko.site:8000/bad-habit/remove/${habitId}
+
+        const endpoint = habits.good
+            ? `https://vnikolaenko.site:8000/good-habit/remove/${habitId}`
+            : `https://vnikolaenko.site:8000/bad-habit/remove/${habitId}`;
+
         try {
-            await fetch(endpoint, {
+            await authFetch(endpoint, {
                 method: "DELETE",
-                headers: { "Authorization": `Bearer ${sessionStorage.getItem("jwtToken")}` }
             });
-            setHabits((prev) => prev.filter(habit => habit.id !== habitId));
-        } catch (error) {
-            console.log(error);
+            setHabits(prev => prev.filter(h => h.id !== habitId));
+        } catch (err) {
+            console.error(err);
         }
     }
-    console.log(habits);
 
     async function breakDown(habitId) {
         try {
-            await fetch(`https://vnikolaenko.site:8080/bad-habit/breakdown-now/${habitId}`, {
+            // http://localhost:8080/auth/breakdown/${habitId}
+            // https://vnikolaenko.site:8000/bad-habit/breakdown-now/${habitId}
+
+            await authFetch(`https://vnikolaenko.site:8000/bad-habit/breakdown-now/${habitId}`, {
                 method: "GET",
-                headers: { "Authorization": `Bearer ${sessionStorage.getItem("jwtToken")}` }
             });
-        } catch (error) {
-            console.log(error);
+        } catch (err) {
+            console.error(err);
         }
     }
 
     return (
         <>
             <button className="account" onClick={() => setAccInfo(true)}>A</button>
-            <Account
-                active={accInfo}
-                setActive={setAccInfo}
-            />
+            <Account active={accInfo} setActive={setAccInfo} />
+
             <button className="add-habit" onClick={() => setPopUpActive(true)}>+</button>
             <PopUpForm
                 active={popUpActive}
                 setActive={setPopUpActive}
-                onAddHabit={(newHabit) => setHabits((prev) => [...prev, newHabit])}
+                onAddHabit={newHabit => setHabits(prev => [...prev, newHabit])}
             />
-            <div className="habit-grid-container">
-                {habits.map((habit, index) => (
-                    <div className="habit" key={index}>
-                        <button className="delete" onClick={() => removeHabit(habit.id)}>Nahuy</button>
-                        <h3>{habit.name}</h3>
-                        <p>Target: {habit.target} week(s)</p>
-                        <p>Type: {habit.good ? "Good" : "Bad"}</p>
 
-                        {/*где должна генерироваться дата?*/}
-                        {/*{!habit.good && (*/}
-                        {/*    <button className="breakdown" onClick={() => breakDown(habit.id)}>Break down</button>*/}
-                        {/*)}*/}
-                    </div>
-                ))}
-            </div>
-
+            <HabitGrid habits={habits} removeHabit={removeHabit} breakDown={breakDown} />
         </>
-
-    )
+    );
 }

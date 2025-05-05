@@ -22,4 +22,5 @@ export async function authFetch(url, options = {}, requireAuth = true) {
     }
 
     return response;
+    //
 }

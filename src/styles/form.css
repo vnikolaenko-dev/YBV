@@ -107,7 +107,7 @@
 }
 
 .habit-form button[type="submit"]:hover {
-    background-color: #388e3c;
+    background-color: grey;
     transform: translateY(-2px);
 }
 
