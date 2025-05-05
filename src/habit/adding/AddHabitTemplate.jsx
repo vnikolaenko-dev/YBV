@@ -10,5 +10,5 @@ export default function Templates({ onSelectTemplate }) {
             </div>
         </div>
     );
-    //
+
 }

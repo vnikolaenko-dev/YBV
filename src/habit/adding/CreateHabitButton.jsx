@@ -54,5 +54,5 @@ export default function SubmitButton({ good, name, dateOfStart, onAddHabit, setA
     return (
         <button onClick={handleSubmit} type="submit">Add</button>
     );
-    //
+
 }

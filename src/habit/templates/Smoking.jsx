@@ -78,5 +78,5 @@ export default function Smoking({ setActive, onAddHabit, onBack }) {
 
         </div>
     );
-    //
+
 }

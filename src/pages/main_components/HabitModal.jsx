@@ -60,5 +60,5 @@ export default function HabitModal({ active, setActive, habit, removeHabit, brea
             </div>
         </div>
     );
-    //
+
 }
