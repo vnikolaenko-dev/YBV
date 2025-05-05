@@ -1,0 +1,236 @@
+.habit-grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 133px);
+    grid-auto-rows: 133px;
+    gap: 23px;
+    padding: 70px;
+    background-color: #0e0e0f;
+}
+
+.habit-card {
+    background: #1a1a1d;
+    border-radius: 20px;
+    padding: 14px 16px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.habit-card.active{
+    opacity: 1;
+    pointer-events: all;
+}
+
+.habit-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+}
+
+.habit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.habit-type {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.habit-type.good {
+    background: green;
+    color: #fff;
+}
+
+.habit-type.bad {
+    background: red;
+    color: #fff;
+}
+
+.habit-body {
+    margin-top: 12px;
+}
+
+.habit-name {
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0 0 6px;
+}
+
+.habit-target,
+.habit-date {
+    font-size: 11px;
+    margin: 2px 0;
+}
+
+.habit-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.habit-modal.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.habit-modal-content {
+    background-color: #1a1a1d;
+    padding: 30px;
+    border-radius: 24px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+    color: white;
+    transform: scale(1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: 0.4s all;
+}
+
+.habit-modal-content.active {
+    transform: scale(2);
+
+}
+
+.habit-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.flame-icon {
+    background-color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 20px;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.habit-streak {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.habit-subtitle {
+    font-size: 13px;
+    color: #aaa;
+}
+
+.habit-type-modal {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.habit-type-modal.good {
+    background: green;
+    max-width: 34px;
+    color: #fff;
+}
+
+.habit-type-modal.bad {
+    background: red;
+    max-width: 24px;
+    color: #fff;
+}
+
+.habit-name-modal {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.habit-description-modal {
+    font-size: 13px;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.habit-calendar {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.calendar-dot-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    color: #666;
+}
+
+.calendar-dot-wrapper.checked {
+    color: white;
+
+}
+
+.calendar-dot {
+    width: 14px;
+    height: 14px;
+    background-color: #333;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.calendar-dot-wrapper.checked .calendar-dot {
+    background-color: white;
+    box-shadow: 0 0 6px rgba(202, 228, 225, 0.92), 0 0 30px rgba(202, 228, 225, 0.34), 0 0 12px rgba(191, 226, 255, 0.52), 0 0 21px rgba(191, 226, 255, 0.92), 0 0 34px rgba(191, 226, 255, 0.78), 0 0 54px rgba(191, 226, 255, 0.92);
+}
+
+.habit-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.habit-break {
+    background-color: red;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+
+    &:hover {
+        background-color: darkred;
+        transition: 0.3s;
+    }
+}
+
+.habit-delete {
+    background-color: #3c3c3e;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+
+    &:hover {
+        background-color: #2c2c2e;
+        transition: 0.3s;
+    }
+}

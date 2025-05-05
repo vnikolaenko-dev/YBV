@@ -12,8 +12,14 @@ export default function AuthForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
+        // http://localhost:8080/auth/login
+        // http://localhost:8080/auth/register
 
-        const endpoint = isLogin ? "https://vnikolaenko.site:8000/auth/login" : "https://vnikolaenko.site:8000/auth/register";
+        // https://vnikolaenko.site:8000/auth/login
+        // https://vnikolaenko.site:8000/auth/register
+        const endpoint = isLogin
+            ? "https://vnikolaenko.site:8000/auth/login"
+            : "https://vnikolaenko.site:8000/auth/register";
         const response = await fetch(endpoint, {
             method: "POST",
             headers: {
@@ -21,7 +27,7 @@ export default function AuthForm() {
             },
             body: JSON.stringify({ email, password })
         });
-
+        console.log(JSON.stringify({ email, password }))
         console.log(response.status);
         const data = await response.json();
 
@@ -31,6 +37,7 @@ export default function AuthForm() {
             setError(data.status);
         } else {
             sessionStorage.setItem("jwtToken", data.token);
+            console.log(data.token);
             localStorage.setItem("email", email);
             navigate("/main");
             console.log("srabotalo");
