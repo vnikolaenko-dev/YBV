@@ -1,15 +1,20 @@
 import {authFetch} from "../../auth/fetchUser.js";
 import moment from "moment";
 import '../../styles/form.css';
+import {useState} from "react";
 
 
 export default function SubmitButton({ good, name, dateOfStart, onAddHabit, setActive, setName, setDateOfStart, setGood }) {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!name.trim()) {
+        if ( isSubmitting || !name.trim()) {
             return;
         }
+
+        setIsSubmitting(true);
 
         const newHabit = {
             name,
@@ -37,6 +42,7 @@ export default function SubmitButton({ good, name, dateOfStart, onAddHabit, setA
 
             if (!response.ok) {
                 console.log(response);
+                return;
             }
 
             const savedHabit = await response.json();
@@ -48,11 +54,15 @@ export default function SubmitButton({ good, name, dateOfStart, onAddHabit, setA
             setActive(false);
         } catch (error) {
             console.log(error);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
     return (
-        <button onClick={handleSubmit} type="submit">Add</button>
+        <button onClick={handleSubmit} type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Adding..." : "Add"}
+        </button>
     );
 
 }
