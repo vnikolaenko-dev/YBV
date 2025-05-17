@@ -13,8 +13,8 @@ export default function useHabits() {
             setHabits(JSON.parse(savedHabits));
         } else {
             // http://localhost:8080/auth/bad-habit/get-all
-            // https://vnikolaenko.site:8000/bad-habit/get-all
-            authFetch("https://vnikolaenko.site:8000/bad-habit/get-all", {
+            // https://vnikolaenko.site:8000/habit/get-all
+            authFetch("https://vnikolaenko.site:8000/habit/get-all", {
                 method: "GET",
             })
                 .then(res => res.json())

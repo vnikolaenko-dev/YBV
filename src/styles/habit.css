@@ -19,6 +19,31 @@
     transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
+.add-habit {
+    background: #1a1a1d;
+    border-radius: 20px;
+    color: #fff;
+    display: flex;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    border: none;
+    justify-content: center;
+    align-items: center;
+    font-size: 35px;
+    cursor: grab;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+    }
+
+}
+
+.add-habit.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
 .habit-card.active{
     opacity: 1;
     pointer-events: all;

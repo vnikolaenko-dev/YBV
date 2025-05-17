@@ -17,24 +17,26 @@
     transition: box-shadow 0.2s ease, transform 0.3s ease;
 }
 
-.add-habit{
-    background-color: grey;
-    border: 1px solid grey;
-    border-radius: 10px;
-    color: white;
-    text-align: center;
-    font-size: 20px;
-    left: 85%;
-    top: 5%;
-    width: 30px;
-    position: absolute;
+/*.add-habit {*/
+/*    background-color: darkgray;*/
+/*    border-radius: 10px;*/
+/*    font-weight: bold;*/
+/*    font-size: 10px;*/
+/*    display: flex; !* Чтобы align-items работал *!*/
+/*    align-items: center;*/
+/*    justify-content: center; !* По центру содержимое *!*/
+/*    !*box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);*!*/
+/*    !*cursor: grab; !* Обычно для кнопок используют pointer *!*!*/
+/*    !*transition: box-shadow 0.2s ease, transform 0.3s ease;*!*/
+/*    border: none; !* Убираем стандартную рамку *!*/
+/*    !*padding: 8px 16px; !* Добавим немного внутреннего отступа *!*!*/
 
-    &:hover{
-        background-color: darkgrey;
-        transition: 0.3s;
-    }
 
-}
+/*    !*&:hover{*!*/
+/*    !*    transition: box-shadow 0.2s ease, transform 0.3s ease;*!*/
+/*    !*}*!*/
+
+/*}*/
 
 .account{
     background-color: grey;

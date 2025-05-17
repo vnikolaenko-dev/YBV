@@ -49,17 +49,22 @@ export default function Main() {
     return (
         <>
             <button className="account" onClick={() => setAccInfo(true)}>A</button>
-            <Account active={accInfo} setActive={setAccInfo} />
+            <Account active={accInfo} setActive={setAccInfo}/>
 
-            <button className="add-habit" onClick={() => setPopUpActive(true)}>+</button>
             <PopUpForm
                 active={popUpActive}
                 setActive={setPopUpActive}
                 onAddHabit={newHabit => setHabits(prev => [...prev, newHabit])}
             />
 
-            <HabitGrid habits={habits} removeHabit={removeHabit} breakDown={breakDown} />
+            <HabitGrid
+                habits={habits}
+                removeHabit={removeHabit}
+                breakDown={breakDown}
+                onAddClick={() => setPopUpActive(true)}
+                isFormOpen={popUpActive}
+            />
         </>
     );
 }
-//
+
