@@ -38,18 +38,20 @@ export default function HabitModal({ active, setActive, habit, removeHabit, brea
                         Score:
                     </p>
                 </div>
-                <div className="habit-calendar">
-                    {daysOfWeek.map((day, index) => (
-                        <div
-                            key={index}
-                            className={`calendar-dot-wrapper ${checkedDays[index] ? "checked" : ""}`}
-                            onClick={() => toggleDay(index)}
-                        >
-                            <div className="calendar-dot"/>
-                            <span>{day}</span>
-                        </div>
-                    ))}
-                </div>
+                {habit.good && (
+                    <div className="habit-calendar">
+                        {daysOfWeek.map((day, index) => (
+                            <div
+                                key={index}
+                                className={`calendar-dot-wrapper ${checkedDays[index] ? "checked" : ""}`}
+                                onClick={() => toggleDay(index)}
+                            >
+                                <div className="calendar-dot"/>
+                                <span>{day}</span>
+                            </div>
+                        ))}
+                    </div>
+                )}
 
                 <div className="habit-actions">
                     {!habit.good && (
