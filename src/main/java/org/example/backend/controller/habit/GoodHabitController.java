@@ -1,21 +1,18 @@
 package org.example.backend.controller.habit;
 
 import lombok.RequiredArgsConstructor;
+import org.example.backend.dto.request.HabitRequest;
 import org.example.backend.model.entity.User;
 import org.example.backend.model.entity.habit.Habit;
-import org.example.backend.model.entity.habit.badHabit.BadHabit;
-import org.example.backend.model.entity.habit.badHabit.Breakdown;
 import org.example.backend.model.entity.habit.goodHabit.CheckIn;
 import org.example.backend.model.entity.habit.goodHabit.GoodHabit;
 import org.example.backend.model.enums.Status;
-import org.example.backend.model.response.BadHabitResponse;
-import org.example.backend.model.response.GoodHabitResponse;
-import org.example.backend.model.response.StatusResponse;
+import org.example.backend.dto.response.GoodHabitResponse;
+import org.example.backend.dto.response.StatusResponse;
 import org.example.backend.security.JwtRequestFilter;
 import org.example.backend.service.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.CharArrayReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -42,22 +39,31 @@ public class GoodHabitController {
 
 
     @PostMapping("/create")
-    public Habit createBadHabit(@RequestHeader("Authorization") String authHeader, @RequestBody Habit habit) {
+    public Habit createBadHabit(@RequestHeader("Authorization") String authHeader, @RequestBody HabitRequest habit) {
         User user = userService.getUserByEmail(jwtRequestFilter.getEmail(authHeader));
-        habit.setUser(user);
-        return goodHabitService.createGoodHabit(habit);
+
+        Habit newHabit = new Habit();
+        newHabit.setName(habit.getName());
+        newHabit.setGood(habit.isGood());
+        newHabit.setTarget(30);
+        newHabit.setDateOfStart(habit.getDateOfStart());
+
+        newHabit.setUser(user);
+        return goodHabitService.createGoodHabit(newHabit);
     }
 
-    @GetMapping("/breakdown-now/{id}")
-    public StatusResponse registerBreakdown(@RequestHeader("Authorization") String authHeader, @PathVariable long id) {
+    @GetMapping("/check-in/{id}/{time}")
+    public StatusResponse registerCheckIn(@RequestHeader("Authorization") String authHeader, @PathVariable long id, @PathVariable String time) {
         User user = userService.getUserByEmail(jwtRequestFilter.getEmail(authHeader));
 
         Habit habit = habitService.getHabit(id, user);
         GoodHabit goodHabit = goodHabitService.getGoodHabit(habit);
+
         CheckIn checkIn = new CheckIn();
         checkIn.setGoodHabit(goodHabit);
-        checkIn.setDateOfCheckIn(LocalDateTime.now());
+        checkIn.setDateOfCheckIn(LocalDateTime.parse(time));
         checkInService.addCheckIn(checkIn);
+
         return new StatusResponse(Status.OK);
     }
 }

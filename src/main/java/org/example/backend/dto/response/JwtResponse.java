@@ -1,4 +1,4 @@
-package org.example.backend.model.response;
+package org.example.backend.dto.response;
 
 import lombok.Data;
 import org.example.backend.model.enums.Status;
