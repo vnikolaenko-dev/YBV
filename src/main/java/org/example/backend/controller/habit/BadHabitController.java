@@ -15,7 +15,6 @@ import org.example.backend.service.BreakdownService;
 import org.example.backend.service.HabitService;
 import org.example.backend.service.UserService;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.support.RequestHandledEvent;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
