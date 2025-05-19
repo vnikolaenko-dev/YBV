@@ -1,9 +1,10 @@
 package org.example.backend.controller.user;
 
 import lombok.RequiredArgsConstructor;
+import org.example.backend.dto.request.UserRequest;
 import org.example.backend.model.entity.User;
 import org.example.backend.model.enums.Status;
-import org.example.backend.model.response.JwtResponse;
+import org.example.backend.dto.response.JwtResponse;
 import org.example.backend.security.DatabaseCrypto;
 import org.example.backend.service.UserService;
 import org.example.backend.util.JwtTokenUtils;
@@ -27,7 +28,7 @@ public class AuthorizationController {
      * @return JwtResponse с токеном или сообщением об ошибке
      */
     @PostMapping("/login")
-    public JwtResponse login(@RequestBody User user) {
+    public JwtResponse login(@RequestBody UserRequest user) {
         User userFromDB = userService.findUserByEmail(user.getEmail());
 
         // Проверяем существование пользователя и совпадение паролей
@@ -47,25 +48,30 @@ public class AuthorizationController {
      * @return JwtResponse с токеном или сообщением об ошибке
      */
     @PostMapping("/register")
-    public JwtResponse register(@RequestBody User user) {
+    public JwtResponse register(@RequestBody UserRequest user) {
         // Проверка на существующего пользователя
         if (userService.findUserByEmail(user.getEmail()) != null) {
             return new JwtResponse(Status.ERROR, null);
         }
 
+        User newUser = new User();
+        newUser.setEmail(user.getEmail());
+        newUser.setPassword(user.getPassword());
+        newUser.setName(user.getName());
+
         // Установка роли (хардкод для админа - нужно вынести в конфиг)
         if (!user.getEmail().equals("viktor.nikolaenko.2005@gmail.com")) {
-            user.setRole("USER");
+            newUser.setRole("USER");
         } else {
-            user.setRole("ADMIN");
+            newUser.setRole("ADMIN");
         }
 
         // Шифрование пароля и сохранение пользователя
         user.setPassword(crypto.encrypt(user.getPassword()));
-        userService.createUser(user);
+        userService.createUser(newUser);
 
         // Генерация токена для нового пользователя
-        String token = jwtTokenUtils.generateToken(user.getEmail(), user.getRole());
+        String token = jwtTokenUtils.generateToken(user.getEmail(), newUser.getRole());
         return new JwtResponse(Status.OK, token, user.getName());
     }
 }

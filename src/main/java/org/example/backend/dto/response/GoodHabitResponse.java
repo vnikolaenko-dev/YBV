@@ -1,8 +1,7 @@
-package org.example.backend.model.response;
+package org.example.backend.dto.response;
 
 import lombok.Data;
 import org.example.backend.model.entity.habit.Habit;
-import org.example.backend.model.entity.habit.badHabit.Breakdown;
 import org.example.backend.model.entity.habit.goodHabit.CheckIn;
 
 import java.util.ArrayList;
