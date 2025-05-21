@@ -2,6 +2,8 @@ package org.example.backend.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +18,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Фильтр для аутентификации на основе JWT-токенов.
@@ -28,6 +33,33 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     // Секретный ключ для верификации подписи JWT (берется из application.properties)
     @Value("${jwt.secret}")
     private String secret;
+
+
+    // Время жизни токена мониторинга (30 дней)
+    @Value("${jwt.monitoring.expiration:2592000000}")
+    private long monitoringTokenExpiration;
+
+    /**
+     * Генерация и вывод токена для мониторинга при старте приложения
+     */
+    @PostConstruct
+    public void generateMonitoringToken() {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", "MONITORING");
+
+        String token = Jwts.builder()
+                .setClaims(claims)
+                .setSubject("monitoring-system")
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + monitoringTokenExpiration))
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
+
+        logger.info("\n\n=== MONITORING TOKEN ===\n" +
+                "Use this token for accessing monitoring endpoints:\n" +
+                "Authorization: Bearer " + token + "\n" +
+                "========================\n");
+    }
 
     /**
      * Основной метод фильтра, вызываемый для каждого HTTP-запроса

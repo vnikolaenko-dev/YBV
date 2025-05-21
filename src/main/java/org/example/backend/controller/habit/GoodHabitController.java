@@ -2,6 +2,7 @@ package org.example.backend.controller.habit;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.HabitRequest;
+import org.example.backend.dto.response.ScoreResponse;
 import org.example.backend.model.entity.User;
 import org.example.backend.model.entity.habit.Habit;
 import org.example.backend.model.entity.habit.goodHabit.CheckIn;
@@ -14,6 +15,7 @@ import org.example.backend.service.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 @RestController
@@ -53,7 +55,7 @@ public class GoodHabitController {
     }
 
     @GetMapping("/check-in/{id}/{time}")
-    public StatusResponse registerCheckIn(@RequestHeader("Authorization") String authHeader, @PathVariable long id, @PathVariable String time) {
+    public ScoreResponse registerCheckIn(@RequestHeader("Authorization") String authHeader, @PathVariable long id, @PathVariable String time) {
         User user = userService.getUserByEmail(jwtRequestFilter.getEmail(authHeader));
 
         Habit habit = habitService.getHabit(id, user);
@@ -64,6 +66,18 @@ public class GoodHabitController {
         checkIn.setDateOfCheckIn(LocalDateTime.parse(time));
         checkInService.addCheckIn(checkIn);
 
-        return new StatusResponse(Status.OK);
+        ScoreResponse response = new ScoreResponse();
+
+        long days = checkInService.getDaysSinceLastCheckIn(goodHabit);
+        if (days >= 0) {
+            response.setCurrentScore(days);
+            response.setMaxScore(days);
+        } else {
+            LocalDateTime now = LocalDateTime.now();
+            response.setCurrentScore(ChronoUnit.DAYS.between(habit.getDateOfStart(), now));
+            response.setMaxScore(ChronoUnit.DAYS.between(habit.getDateOfStart(), now));
+        }
+
+        return response;
     }
 }
