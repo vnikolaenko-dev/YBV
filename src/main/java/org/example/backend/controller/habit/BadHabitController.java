@@ -2,13 +2,12 @@ package org.example.backend.controller.habit;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.request.HabitRequest;
+import org.example.backend.dto.response.ScoreResponse;
 import org.example.backend.model.entity.User;
 import org.example.backend.model.entity.habit.Habit;
 import org.example.backend.model.entity.habit.badHabit.BadHabit;
 import org.example.backend.model.entity.habit.badHabit.Breakdown;
-import org.example.backend.model.enums.Status;
 import org.example.backend.dto.response.BadHabitResponse;
-import org.example.backend.dto.response.StatusResponse;
 import org.example.backend.security.JwtRequestFilter;
 import org.example.backend.service.BadHabitService;
 import org.example.backend.service.BreakdownService;
@@ -17,6 +16,7 @@ import org.example.backend.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 @RestController
@@ -56,7 +56,7 @@ public class BadHabitController {
     }
 
     @GetMapping("/breakdown-now/{id}/{time}")
-    public StatusResponse registerBreakdown(@RequestHeader("Authorization") String authHeader, @PathVariable long id, @PathVariable String time) {
+    public ScoreResponse registerBreakdown(@RequestHeader("Authorization") String authHeader, @PathVariable long id, @PathVariable String time) {
         User user = userService.getUserByEmail(jwtRequestFilter.getEmail(authHeader));
 
         Habit habit = habitService.getHabit(id, user);
@@ -67,8 +67,22 @@ public class BadHabitController {
         breakdown.setDateOfBreakdown(LocalDateTime.parse(time));
         breakdownService.addBreakdown(breakdown);
 
-        return new StatusResponse(Status.OK);
+        ScoreResponse response = new ScoreResponse();
+
+        long days = breakdownService.getDaysSinceLastBreakdown(badHabit);
+        if (days >= 0) {
+            response.setCurrentScore(days);
+            response.setMaxScore(days);
+        } else {
+            LocalDateTime now = LocalDateTime.now();
+            response.setCurrentScore(ChronoUnit.DAYS.between(habit.getDateOfStart(), now));
+            response.setMaxScore(ChronoUnit.DAYS.between(habit.getDateOfStart(), now));
+        }
+
+        return response;
     }
+
+
 
 
 }
