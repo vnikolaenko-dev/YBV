@@ -68,6 +68,7 @@ public class GoodHabitController {
 
         ScoreResponse response = new ScoreResponse();
 
+
         long days = checkInService.getDaysSinceLastCheckIn(goodHabit);
         if (days >= 0) {
             response.setCurrentScore(days);
