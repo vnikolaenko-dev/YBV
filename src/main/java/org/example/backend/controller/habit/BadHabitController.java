@@ -55,8 +55,9 @@ public class BadHabitController {
         return badHabitService.createBadHabit(newHabit);
     }
 
-    @GetMapping("/breakdown-now/{id}/{time}")
+    @GetMapping("/breakdown/{id}/{time}")
     public ScoreResponse registerBreakdown(@RequestHeader("Authorization") String authHeader, @PathVariable long id, @PathVariable String time) {
+        time += "T00:00:00";
         User user = userService.getUserByEmail(jwtRequestFilter.getEmail(authHeader));
 
         Habit habit = habitService.getHabit(id, user);

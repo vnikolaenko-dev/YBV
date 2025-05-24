@@ -56,6 +56,7 @@ public class GoodHabitController {
 
     @GetMapping("/check-in/{id}/{time}")
     public ScoreResponse registerCheckIn(@RequestHeader("Authorization") String authHeader, @PathVariable long id, @PathVariable String time) {
+        time += "T00:00:00";
         User user = userService.getUserByEmail(jwtRequestFilter.getEmail(authHeader));
 
         Habit habit = habitService.getHabit(id, user);

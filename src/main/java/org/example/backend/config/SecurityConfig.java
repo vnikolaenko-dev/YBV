@@ -56,7 +56,8 @@ public class SecurityConfig {
                         .requestMatchers("/habit/**").authenticated()
 
                         .requestMatchers("/metrics/**").hasRole("MONITORING")
-                        .requestMatchers("/actuator/**").hasRole("MONITORING")
+                        // .requestMatchers("/actuator/**").hasRole("MONITORING")
+                        .requestMatchers("/actuator/**").permitAll()
                 )
                 // Добавляем свой JWT-фильтр
                 .addFilterBefore(jwtRequestFilter, AuthorizationFilter.class);
