@@ -2,7 +2,6 @@ package org.example.backend.config;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.security.JwtRequestFilter;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -55,7 +54,9 @@ public class SecurityConfig {
                         .requestMatchers("/bad-habit/**").authenticated()
                         .requestMatchers("/good-habit/**").authenticated()
                         .requestMatchers("/habit/**").authenticated()
-                        .requestMatchers("/actuator/**").permitAll() // Только для админов
+
+                        .requestMatchers("/metrics/**").hasRole("MONITORING")
+                        .requestMatchers("/actuator/**").hasRole("MONITORING")
                 )
                 // Добавляем свой JWT-фильтр
                 .addFilterBefore(jwtRequestFilter, AuthorizationFilter.class);

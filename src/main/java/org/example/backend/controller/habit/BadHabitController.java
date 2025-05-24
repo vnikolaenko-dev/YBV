@@ -69,6 +69,7 @@ public class BadHabitController {
 
         ScoreResponse response = new ScoreResponse();
 
+
         long days = breakdownService.getDaysSinceLastBreakdown(badHabit);
         if (days >= 0) {
             response.setCurrentScore(days);
@@ -78,6 +79,7 @@ public class BadHabitController {
             response.setCurrentScore(ChronoUnit.DAYS.between(habit.getDateOfStart(), now));
             response.setMaxScore(ChronoUnit.DAYS.between(habit.getDateOfStart(), now));
         }
+
 
         return response;
     }

@@ -8,6 +8,7 @@ import org.example.backend.dto.response.JwtResponse;
 import org.example.backend.security.DatabaseCrypto;
 import org.example.backend.service.UserService;
 import org.example.backend.util.JwtTokenUtils;
+import org.example.backend.util.metrics.UserMetrics;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -20,6 +21,7 @@ public class AuthorizationController {
     private final UserService userService;
     private final JwtTokenUtils jwtTokenUtils;
     private final DatabaseCrypto crypto;
+    private final UserMetrics userMetrics;
 
     /**
      * Обрабатывает запрос на вход пользователя.
@@ -56,7 +58,7 @@ public class AuthorizationController {
 
         User newUser = new User();
         newUser.setEmail(user.getEmail());
-        newUser.setPassword(user.getPassword());
+        newUser.setPassword(crypto.encrypt(user.getPassword()));
         newUser.setName(user.getName());
 
         // Установка роли (хардкод для админа - нужно вынести в конфиг)
@@ -67,11 +69,12 @@ public class AuthorizationController {
         }
 
         // Шифрование пароля и сохранение пользователя
-        user.setPassword(crypto.encrypt(user.getPassword()));
+        newUser.setPassword(crypto.encrypt(user.getPassword()));
         userService.createUser(newUser);
-
         // Генерация токена для нового пользователя
         String token = jwtTokenUtils.generateToken(user.getEmail(), newUser.getRole());
+
+        userMetrics.incrementUserCount(); // Обновляем метрику
         return new JwtResponse(Status.OK, token, user.getName());
     }
 }
