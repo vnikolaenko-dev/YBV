@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 export default function AuthForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
     const [error, setError] = useState(null);
     const [isLogin, setIsLogin] = useState(true);
     const navigate = useNavigate();
@@ -25,9 +26,9 @@ export default function AuthForm() {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ name, email, password })
         });
-        console.log(JSON.stringify({ email, password }))
+        console.log(JSON.stringify({ name, email, password }))
         console.log(response.status);
         const data = await response.json();
 
@@ -38,7 +39,7 @@ export default function AuthForm() {
         } else {
             sessionStorage.setItem("jwtToken", data.token);
             console.log(data.token);
-            localStorage.setItem("email", email);
+            // localStorage.setItem("email", email);
             navigate("/main");
             console.log("srabotalo");
         }
@@ -48,6 +49,14 @@ export default function AuthForm() {
         <div className="container">
             <h2 className="header">{isLogin ? "Sign in" : "Create account"}</h2>
             <form className="auth" onSubmit={handleSubmit}>
+                <input
+                    className="auth-input"
+                    type="text"
+                    placeholder="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                />
                 <input
                     className="auth-input"
                     type="email"
@@ -76,7 +85,7 @@ export default function AuthForm() {
                 }}
                 className="var-button"
             >
-                {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
+            {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
             </a>
         </div>
     );

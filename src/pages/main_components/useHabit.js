@@ -22,6 +22,7 @@ export default function useHabits() {
                     setHabits(data);
                     localStorage.setItem("habits", JSON.stringify(data));
                     localStorage.setItem("habitsLoaded", "true");
+                    console.log(data);
                 })
                 .catch(console.error);
         }

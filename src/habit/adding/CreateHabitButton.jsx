@@ -18,8 +18,11 @@ export default function SubmitButton({ good, name, dateOfStart, onAddHabit, setA
 
         const newHabit = {
             name,
-            dateOfStart: moment().format("YYYY-MM-DD") + "T00:00:00",
+            dateOfStart: dateOfStart
+                ? moment(dateOfStart).format("YYYY-MM-DD") + "T00:00:00"
+                : moment().format("YYYY-MM-DD") + "T00:00:00",
             good,
+
         };
 
         // http://localhost:8080/auth/addBadHabit
@@ -47,6 +50,7 @@ export default function SubmitButton({ good, name, dateOfStart, onAddHabit, setA
 
             const savedHabit = await response.json();
             onAddHabit(savedHabit);
+            console.log(savedHabit);
 
             setName("");
             setDateOfStart("");

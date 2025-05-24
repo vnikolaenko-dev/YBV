@@ -1,7 +1,7 @@
 import HabitCard from "./HabitCard.jsx";
 import '../../styles/habit.css';
 
-export default function HabitGrid({ habits, removeHabit, breakDown, onAddClick, isFormOpen }) {
+export default function HabitGrid({ habits, removeHabit, onAddClick, isFormOpen }) {
     return (
         <div className="habit-grid-container">
             {habits.slice(0).reverse().map((habit, index) => (
@@ -9,7 +9,7 @@ export default function HabitGrid({ habits, removeHabit, breakDown, onAddClick, 
                     key={index}
                     habit={habit}
                     removeHabit={removeHabit}
-                    breakDown={breakDown}
+                    // breakDown={breakDown}
                 />
             ))}
 

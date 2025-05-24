@@ -33,18 +33,18 @@ export default function Main() {
         }
     }
 
-    async function breakDown(habitId) {
-        try {
-            // http://localhost:8080/auth/breakdown/${habitId}
-            // https://vnikolaenko.site:8000/bad-habit/breakdown-now/${habitId}
-
-            await authFetch(`https://vnikolaenko.site:8000/bad-habit/breakdown-now/${habitId}`, {
-                method: "GET",
-            });
-        } catch (err) {
-            console.error(err);
-        }
-    }
+    // async function breakDown(habitId) {
+    //     try {
+    //         // http://localhost:8080/auth/breakdown/${habitId}
+    //         // https://vnikolaenko.site:8000/bad-habit/breakdown-now/${habitId}
+    //
+    //         await authFetch(`https://vnikolaenko.site:8000/bad-habit/breakdown-now/${habitId}`, {
+    //             method: "GET",
+    //         });
+    //     } catch (err) {
+    //         console.error(err);
+    //     }
+    // }
 
     return (
         <>
@@ -60,7 +60,7 @@ export default function Main() {
             <HabitGrid
                 habits={habits}
                 removeHabit={removeHabit}
-                breakDown={breakDown}
+                // breakDown={breakDown}
                 onAddClick={() => setPopUpActive(true)}
                 isFormOpen={popUpActive}
             />

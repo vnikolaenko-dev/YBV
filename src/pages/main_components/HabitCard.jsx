@@ -1,8 +1,8 @@
 import { useState } from "react";
-import HabitModal from "./HabitModal";
+import HabitModal from "../../habit/manage-habit/HabitModal.jsx";
 import "../../styles/habit.css";
 
-export default function HabitCard({ habit, removeHabit, breakDown }) {
+export default function HabitCard({ habit, removeHabit }) {
     const [active, setActive] = useState(false);
 
     return (
@@ -24,7 +24,7 @@ export default function HabitCard({ habit, removeHabit, breakDown }) {
                 setActive={setActive}
                 habit={habit}
                 removeHabit={removeHabit}
-                breakDown={breakDown}
+                // breakDown={breakDown}
             />
         </>
     );
