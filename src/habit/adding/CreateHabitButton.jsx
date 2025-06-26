@@ -33,8 +33,8 @@ export default function SubmitButton({ good, name, dateOfStart, onAddHabit, setA
 
         try {
             const endpoint = good
-                ? "https://vnikolaenko.site:8000/good-habit/create"
-                : "https://vnikolaenko.site:8000/bad-habit/create";
+                ? "http://localhost:8000/good-habit/create"
+                : "http://localhost:8000/bad-habit/create";
             const response = await authFetch(endpoint, {
                 method: "POST",
                 headers: {

@@ -20,8 +20,8 @@ export default function Main() {
         // https://vnikolaenko.site:8000/bad-habit/remove/${habitId}
 
         const endpoint = habits.good
-            ? `https://vnikolaenko.site:8000/good-habit/remove/${habitId}`
-            : `https://vnikolaenko.site:8000/bad-habit/remove/${habitId}`;
+            ? `http://localhost:8000/good-habit/remove/${habitId}`
+            : `http://localhost:8000/bad-habit/remove/${habitId}`;
 
         try {
             await authFetch(endpoint, {

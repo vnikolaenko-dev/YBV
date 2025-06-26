@@ -10,7 +10,7 @@ export default function BreakDownButton({ habitId, onBreakDown }) {
         const time = moment().format("YYYY-MM-DD");
 
         try {
-            const response = await authFetch(`https://vnikolaenko.site:8000/bad-habit/breakdown/${habitId}/${time}`, {
+            const response = await authFetch(`http://localhost:8000/bad-habit/breakdown/${habitId}/${time}`, {
                 method: 'GET',
             });
 
