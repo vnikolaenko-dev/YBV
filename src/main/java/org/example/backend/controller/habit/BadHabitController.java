@@ -59,9 +59,14 @@ public class BadHabitController {
     public ScoreResponse registerBreakdown(@RequestHeader("Authorization") String authHeader, @PathVariable long id, @PathVariable String time) {
         time += "T00:00:00";
         User user = userService.getUserByEmail(jwtRequestFilter.getEmail(authHeader));
+        System.out.println("ID: " + id);
+        System.out.println(user);
 
         Habit habit = habitService.getHabit(id, user);
+        System.out.println(habit);
+
         BadHabit badHabit = badHabitService.getBadHabit(habit);
+        System.out.println("Bad: " + badHabit);
 
         Breakdown breakdown = new Breakdown();
         breakdown.setBadHabit(badHabit);

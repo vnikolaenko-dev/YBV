@@ -1,5 +1,6 @@
 package org.example.backend.model.entity.habit.goodHabit;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.example.backend.model.entity.habit.Habit;
@@ -13,7 +14,8 @@ public class GoodHabit {
     private long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "habit_id", nullable = false)
+    @JoinColumn(name = "habit_id", unique = true, nullable = false)
+    @JsonIgnore
     private Habit habit;
 
     public GoodHabit() {
