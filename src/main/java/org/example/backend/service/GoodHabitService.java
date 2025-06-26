@@ -21,10 +21,23 @@ public class GoodHabitService {
 
     @Transactional
     public Habit createGoodHabit(Habit habit) {
+        // Устанавливаем флаг, что это плохая привычка
+        habit.setGood(true);
+
+        // Сначала сохраняем Habit
+        Habit savedHabit = habitService.createHabit(habit);
+
+        // Создаем и связываем BadHabit
         GoodHabit goodHabit = new GoodHabit();
-        Habit h = habitService.createHabit(habit);
-        goodHabit.setHabit(habitService.createHabit(habit));
-        return h;
+        goodHabit.setHabit(savedHabit);
+
+        // Сохраняем GoodHabit
+        goodHabitRepository.save(goodHabit);
+
+        // Обновляем связь в Habit
+        savedHabit.setGoodHabit(goodHabit);
+
+        return savedHabit;
     }
 
     public GoodHabit getGoodHabit(Habit habit) {
